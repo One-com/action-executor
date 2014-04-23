@@ -9,7 +9,8 @@
     "mocha-phantomjs": "=3.1.0",
     "unexpected": "=3.1.5",
     "unexpected-sinon": "=3.0.1",
-    "sinon": "=1.9.1"
+    "sinon": "=1.9.1",
+    "json2htmlcov": "*"
   },
   "scripts": {
     "test": "make test"
