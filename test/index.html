@@ -1,0 +1,55 @@
+<html>
+  <head>
+    <title>Mocha</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" href="../node_modules/mocha/mocha.css" />
+  </head>
+  <body>
+    <div id="mocha"></div>
+
+    <div style="opacity: 0; filter: ~'alpha(opacity=0)'" id="test"></div>
+
+    <script src="../node_modules/mocha/mocha.js"></script>
+
+    <script src="../node_modules/sinon/lib/sinon.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/match.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/spy.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/call.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/behavior.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/stub.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/mock.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/assert.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/event.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/fake_xml_http_request.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/fake_timers.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/xhr_ie.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/timers_ie.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/fake_server.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/util/fake_server_with_clock.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/collection.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/sandbox.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/test.js"></script>
+    <script src="../node_modules/sinon/lib/sinon/test_case.js"></script>
+
+    <script src="../node_modules/unexpected/unexpected.js"></script>
+    <script src="../node_modules/unexpected-sinon/lib/unexpected-sinon.js"></script>
+
+    <script src="../node_modules/factory.js/lib/factory.js"></script>
+    <script src="../node_modules/failboat/lib/Failboat.js"></script>
+    <script src="../lib/actionUtils.js"></script>
+    <script src="../lib/ActionNotReadyError.js"></script>
+    <script src="../lib/ActionCancelledError.js"></script>
+    <script src="../lib/actionInterceptor.js"></script>
+    <script src="../lib/ActionExecutor.js"></script>
+
+    <script>mocha.setup('bdd')</script>
+    <script src="ActionExecutor.spec.js"></script>
+    <script>
+      if (window.mochaPhantomJS) {
+        mochaPhantomJS.run();
+      } else {
+        mocha.run();
+      }
+    </script>
+  </body>
+</html>
