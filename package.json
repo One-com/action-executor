@@ -1,5 +1,6 @@
 {
   "name": "one.com-action-executor",
+  "version": "=0.1.0",
   "dependencies": {
     "failboat": "=0.3.0"
   },
