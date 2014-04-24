@@ -1,7 +1,8 @@
+/*global weknowhow, com, sinon, describe, it, beforeEach, afterEach*/
 var unexpected = weknowhow.expect.clone();
 unexpected.installPlugin(weknowhow.unexpectedSinon);
 
-var ActionExecutor = com.one.ActionExecutor;
+var ActionExecutor = com.one.ActionExecutor,
     ActionNotReadyError = com.one.ActionNotReadyError;
 
 function createTestAction(index) {
