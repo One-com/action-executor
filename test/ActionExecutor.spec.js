@@ -161,7 +161,7 @@ describe('actions.ActionExecutor.enqueue', function () {
         });
 
         describe('and an interceptor is specified', function () {
-            it('the interceptor will be called before each callback provided to enqueue', function (done) {
+            it('the interceptor will be called before callback provided to enqueue', function (done) {
                 var data = {};
                 var cb = sinon.spy();
                 actionExecutor.interceptor = function (action, args, next) {
@@ -174,6 +174,18 @@ describe('actions.ActionExecutor.enqueue', function () {
                 };
                 testAction0.execute.yields(null, data);
                 actionExecutor.enqueue(testAction0, cb);
+            });
+
+            it('the interceptor will be called before the action finishes if no callback is supplied to enqueue', function (done) {
+                var data = {};
+                actionExecutor.interceptor = function (action, args, next) {
+                    expect(action, 'to be', testAction0);
+                    expect(args[1], 'to be', data);
+                    next();
+                    done();
+                };
+                testAction0.execute.yields(null, data);
+                actionExecutor.enqueue(testAction0);
             });
         });
 
