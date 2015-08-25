@@ -3,13 +3,13 @@
 The action executor is capable of coordinating the execution of multiple
 asynchronous actions. In situations where you do latency compensation you have a
 high risk of race conditions. To avoid the race conditions you can use locking
-to serialize execution of actions that touches state shared between the actions.
-You decide the granularity of the locking, the action executor provides you with
-a way to signal that an action can't be started because it can get the proper
+to serialize execution of actions that touches shared state a cross actions. You
+decide the granularity of the locking, the action executor provides you with a
+way to signal that an action can't be started because it can get the proper
 locks.
 
-In addition to handling coordination the action executor also supply retrying
-with exponential backoff and action life cycle hooks. 
+In addition to handling coordination, the action executor also supply retrying
+with exponential backoff and action life cycle hooks.
 
 ## Installation
 
@@ -82,7 +82,7 @@ shows the flow through the application.
 
 ## Example
 
-I think the functionality is best explained by an example.
+The application of the action executor is best explained by an example.
 
 Let's start by creating a new action executor:
 
@@ -97,7 +97,7 @@ var actionExecutor = new ActionExecutor({
 
 The given context is supplied to the action when it is being executed. In this
 case the actions will be able to talk to the backend and update the application
-state that in turn will be reflected in the views. 
+state that in turn will be reflected back to the views. 
 
 Let's say we have an application state that contains a list of persons that we
 want to update. We can make a new action for that:
@@ -119,20 +119,33 @@ RefreshPersonListAction.prototype.execute(function (context, cb) {
 });
 ```
 
-This action can be queue for execution the following way by the action executor:
+This action can be queue for execution by the action executor the following way.
 
 ```js
 actionExecutor.enqueue(new RefreshPersonListAction());
 ```
 
+You can supply a callback as the second parameter if you need a callback when
+the action in done:
+
+```js
+actionExecutor.enqueue(new RefreshPersonListAction(), function (err, data) {
+    // The action has been executed and succeed or failed.
+});
+```
+
 ### Locking
 
 If we want to introduce another action that will be able to delete a given
-person but we don't want to wait for the server to respond before updating the
+person, but we don't want to wait for the server to respond before updating the
 person list, then we have a coordination problem. To solve this problem we
-introduce locking on the persons list. We need to introduce locking in all
-actions that updates the person list. If the action can't get the lock, it will
-yield an `ActionNotReadyError`.
+introduce a lock on the persons list. We need to handle locking in all actions
+that updates the person list. If the action can't get the lock, should yield an
+`ActionNotReadyError`, this will make the action wait in the queue till another
+action has finished, then it will be retried. For this to work, one very
+important invariant has to be in place - *an action that take a lock must always
+release it again when it succeeded or failed* - otherwise actions will get stuck
+in the queue.
 
 Let's start with the `RefreshPersonListAction`:
 
@@ -143,13 +156,13 @@ RefreshPersonListAction.prototype.execute(function (context, cb) {
     var persons = context.state.persons;
     var backend = context.backend;
 
-    if (persons.busy) {
-       return cb(new ActionNotReadyError());
+    if (persons.locked) {
+        return cb(new ActionNotReadyError());
     }
 
-    persons.busy = true;
+    persons.locked = true;
     backend.loadPersonList(function (err, data) {
-        persons.busy = false;
+        persons.locked = false;
         if (!err) {
             persons.all = data.persons;
             persons.emit('updated');
@@ -172,11 +185,11 @@ DeletePersonAction.prototype.execute(function (context, cb) {
     var persons = state.persons;
     var person = this.person;
 
-    if (persons.busy) {
+    if (persons.locked) {
        return cb(new ActionNotReadyError());
     }
 
-    persons.busy = true;
+    persons.locked = true;
 
     var index = persons.indexOf(person);
     if (index === -1) {
@@ -186,7 +199,7 @@ DeletePersonAction.prototype.execute(function (context, cb) {
     persons.all.splice(index, 1);
     persons.emit('updated');
     backend.deletePerson(person.id, function (err, data) {
-        state.persons.busy = false;
+        state.persons.locked = false;
         cb(err);
     });
 });
@@ -208,7 +221,7 @@ actionExecutor.shouldRetryOnError = function (err) {
 };
 ```
 
-Then to enable retrying of the `RefreshPersonListAction` you do the following:
+Then to enable 3 retries for the `RefreshPersonListAction` you do the following:
 
 ```js
 RefreshPersonListAction.prototype.retries = 3;
@@ -217,7 +230,7 @@ RefreshPersonListAction.prototype.retries = 3;
 ### Intercepting actions
 
 In some cases you want to intercept execution of actions. It could be for
-logging or because you wanted to tag error instances for routing.
+logging or because you wanted to tag error instances for error routing.
 
 Here is an example where we are tagging the errors yielded by the action with
 the action name using [Failboat](https://github.com/One-com/failboat):
@@ -244,7 +257,7 @@ that by overriding the `onStatusChange` method on the action executor:
 
 ```js
 actionExecutor.onStatusChange = function (task, status, err) {
-    var errorMessage = err && err.message && ' error: ' + err.message;
+    var errorMessage = err && err.message && ', error: ' + err.message;
     console.log(task.action.name + ' ' + status + errorMessage || ''));
 };
 ```
@@ -257,7 +270,7 @@ RefreshFoldersAction running
 RefreshFoldersAction not ready
 DeletePersonAction done
 RefreshFoldersAction running
-RefreshFoldersAction queued for retrying error: 503 service unavailable
+RefreshFoldersAction queued for retrying, error: 503 service unavailable
 RefreshFoldersAction retrying
 RefreshFoldersAction running
 RefreshFoldersAction done
