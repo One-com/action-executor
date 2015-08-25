@@ -1,5 +1,5 @@
 {
-  "name": "@one.com/action-executor",
+  "name": "action-executor",
   "version": "0.2.2",
   "devDependencies": {
     "mocha": "=1.12.0",
@@ -15,6 +15,6 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://git.one.com/one.com-action-executor.git"
+    "url": "https://github.com/One-com/action-executor.git"
   }
 }
