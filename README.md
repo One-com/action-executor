@@ -18,13 +18,13 @@ with exponential backoff and action life cycle hooks.
 Install it with NPM or add it to your `package.json`:
 
 ```
-$ npm install @one.com/action-executor
+$ npm install action-executor
 ```
 
 Then:
 
 ```js
-var ActionExecutor = require('@one.com/action-executor');
+var ActionExecutor = require('action-executor');
 ```
 
 ### Browser
@@ -49,7 +49,7 @@ Include the library with RequireJS the following way:
 ```js
 require.config({
     paths: {
-        ActionExecutor: 'path/to/com.one-action-executor/lib/ActionExecutor.js'
+        ActionExecutor: 'path/to/action-executor/lib/ActionExecutor.js'
     }
 });
 
