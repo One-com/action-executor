@@ -13,6 +13,7 @@
   "scripts": {
     "test": "make test"
   },
+  "license": "BSD-3-Clause",
   "repository": {
     "type": "git",
     "url": "https://github.com/One-com/action-executor.git"
