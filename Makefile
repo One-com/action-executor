@@ -1,8 +1,7 @@
-REPORTER = dot
+REPORTER = spec
 
 test:
-	./node_modules/mocha-phantomjs/bin/mocha-phantomjs \
-		-p ./node_modules/phantomjs/bin/phantomjs \
+	./node_modules/.bin/mocha-chrome \
 		--reporter $(REPORTER) \
 		test/index.html
 
