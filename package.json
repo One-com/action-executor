@@ -5,8 +5,8 @@
     "mocha": "=3.5.3",
     "mocha-chrome": "^2.0.0",
     "sinon": "=1.9.1",
-    "unexpected": "=3.1.5",
-    "unexpected-sinon": "=3.0.1"
+    "unexpected": "=10.40.2",
+    "unexpected-sinon": "=10.11.2"
   },
   "scripts": {
     "test": "mocha"
