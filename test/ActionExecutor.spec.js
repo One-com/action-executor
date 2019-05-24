@@ -3,8 +3,9 @@ var expect = require("unexpected")
     .installPlugin(require("unexpected-sinon"));
 var sinon = require("sinon");
 
-var ActionExecutor = require("../lib/ActionExecutor");
+var ActionCancelledError = require("../lib/ActionCancelledError");
 var ActionNotReadyError = require("../lib/ActionNotReadyError");
+var ActionExecutor = require("../lib/ActionExecutor");
 
 function createTestAction(index) {
     return {
@@ -28,6 +29,24 @@ function getArgumentList(spy) {
         return call.args;
     });
 }
+
+describe("ActionExecutor", function() {
+    it("should export ActionCancelledError", function() {
+        expect(
+            ActionExecutor.ActionCancelledError,
+            "to be",
+            ActionCancelledError
+        );
+    });
+
+    it("should export ActionNotReadyError", function() {
+        expect(
+            ActionExecutor.ActionNotReadyError,
+            "to be",
+            ActionNotReadyError
+        );
+    });
+});
 
 describe("actions.ActionExecutor.enqueue", function() {
     var clock;
