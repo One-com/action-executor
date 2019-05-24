@@ -1,9 +1,9 @@
 /*global weknowhow, com, sinon, describe, it, beforeEach, afterEach*/
-var unexpected = weknowhow.expect.clone();
-unexpected.installPlugin(weknowhow.unexpectedSinon);
+var expect = require('unexpected').clone().installPlugin(require('unexpected-sinon'));
+var sinon = require('sinon');
 
-var ActionExecutor = com.one.ActionExecutor,
-    ActionNotReadyError = com.one.ActionNotReadyError;
+var ActionExecutor = require('../lib/ActionExecutor');
+var ActionNotReadyError = require('../lib/ActionNotReadyError');
 
 function createTestAction(index) {
     return {
@@ -33,8 +33,8 @@ describe('actions.ActionExecutor.enqueue', function () {
     var actionExecutor;
     var testAction0;
     var context = {};
-    var expect = unexpected.clone()
-        .addAssertion('emitted status events', function (expect, subject, expectedEvents) {
+
+    expect.addAssertion('emitted status events', function (expect, subject, expectedEvents) {
         expect(subject, 'was called times', expectedEvents.length);
         expect(getArgumentList(subject), 'to be an array whose items satisfy', function (args, index) {
             var expectedEvent = expectedEvents[index];
