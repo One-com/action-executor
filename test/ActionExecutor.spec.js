@@ -131,7 +131,7 @@ describe("actions.ActionExecutor.enqueue", function() {
       testAction0.execute.yields(null);
       var cb = sinon.spy();
       actionExecutor.enqueue(testAction0, cb);
-      expect(cb, "was called with", null);
+      expect(cb, "to have all calls satisfying", [null]);
       expect(actionExecutor.queue, "to be empty");
     });
   });
@@ -156,7 +156,10 @@ describe("actions.ActionExecutor.enqueue", function() {
     it("tries to execute all actions in the queue", function() {
       enqueueTasks();
       expect(tasks, "to be an array whose items satisfy", function(task) {
-        expect(task.action.execute, "was called with", context);
+        expect(task.action.execute, "to have a call satisfying", [
+          context,
+          expect.it("to be a function")
+        ]);
       });
     });
 
@@ -273,7 +276,7 @@ describe("actions.ActionExecutor.enqueue", function() {
           it("the action just fails without retrying", function() {
             var spy = sinon.spy();
             actionExecutor.enqueue(testAction0, spy);
-            expect(spy, "was called with", { status: status });
+            expect(spy, "to have a call satisfying", [{ status: status }]);
           });
         });
       });
