@@ -4,11 +4,13 @@
   "devDependencies": {
     "mocha": "=3.5.3",
     "mocha-chrome": "^2.0.0",
+    "nyc": "^13.3.0",
     "sinon": "=1.9.1",
     "unexpected": "=10.40.2",
     "unexpected-sinon": "=10.11.2"
   },
   "scripts": {
+    "coverage": "nyc --reporter lcov --reporter text npm test",
     "test": "mocha"
   },
   "license": "BSD-3-Clause",
