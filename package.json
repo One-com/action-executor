@@ -24,7 +24,7 @@
     "coverage": "nyc --reporter lcov --reporter text npm test",
     "lint": "eslint .",
     "test": "npm run test:node && npm run test:browser",
-    "test:browser": "make test",
+    "test:browser": "npm run build && make test",
     "test:node": "mocha"
   },
   "license": "BSD-3-Clause",
