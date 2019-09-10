@@ -1,6 +1,7 @@
 {
   "name": "action-executor",
   "version": "1.0.2",
+  "main": "lib/ActionExecutor.js",
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-pretty-standard": "^2.0.1",
@@ -10,11 +11,16 @@
     "mocha-chrome": "^2.0.0",
     "nyc": "^13.3.0",
     "prettier": "~1.17.1",
+    "rollup": "^1.21.2",
+    "rollup-plugin-commonjs": "^10.1.0",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-terser": "^5.1.1",
     "sinon": "=1.9.1",
     "unexpected": "=10.40.2",
     "unexpected-sinon": "=10.11.2"
   },
   "scripts": {
+    "build": "rollup -c",
     "coverage": "nyc --reporter lcov --reporter text npm test",
     "lint": "eslint .",
     "test": "mocha"
