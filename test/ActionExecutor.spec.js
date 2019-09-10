@@ -1,11 +1,22 @@
-var expect = require("unexpected")
-  .clone()
-  .installPlugin(require("unexpected-sinon"));
-var sinon = require("sinon");
+/*globals weknowhow:false*/
+var expect;
+var ActionExecutor;
+var sinon;
 
-var ActionCancelledError = require("../lib/ActionCancelledError");
-var ActionNotReadyError = require("../lib/ActionNotReadyError");
-var ActionExecutor = require("../lib/ActionExecutor");
+if (typeof window !== "undefined") {
+  expect = weknowhow.expect.clone().use(weknowhow.unexpectedSinon);
+  sinon = window.sinon;
+} else {
+  expect = require("unexpected")
+    .clone()
+    .installPlugin(require("unexpected-sinon"));
+  sinon = require("sinon");
+
+  ActionExecutor = require("../lib/ActionExecutor");
+}
+
+var ActionCancelledError = ActionExecutor.ActionCancelledError;
+var ActionNotReadyError = ActionExecutor.ActionNotReadyError;
 
 function createTestAction(index) {
   return {

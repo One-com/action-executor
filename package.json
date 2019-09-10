@@ -23,7 +23,9 @@
     "build": "rollup -c",
     "coverage": "nyc --reporter lcov --reporter text npm test",
     "lint": "eslint .",
-    "test": "mocha"
+    "test": "npm run test:node && npm run test:browser",
+    "test:browser": "make test",
+    "test:node": "mocha"
   },
   "license": "BSD-3-Clause",
   "repository": {
