@@ -60,7 +60,7 @@ define(['ActionExecutor'], function (ActionExecutor) {
 
 ## Proposed architecture
 
-You are of cause free to build the architecture you like on top of the action
+You are of course free to build the architecture you like on top of the action
 executor, but the architecture we use and recommend is unidirectional and
 therefore makes the application easier to understand. The following diagram
 shows the flow through the application.
